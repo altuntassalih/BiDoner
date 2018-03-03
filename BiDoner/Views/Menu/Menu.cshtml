@@ -1,0 +1,110 @@
+﻿@model BiDoner.Models.GeneralMenuModel
+@{
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<section id="menu" class="section menu" style="background-image:none;">
+
+    <div class="container">
+
+
+                @foreach (var itemCategory in Model.CategoryList)
+                {
+                    <div class="jt_row jt_row-fluid row">
+                        <div class="col-md-12 jt_col column_container">
+                            <div class="voffset100"></div>
+                            <div class="title first" style="font-size:44px !important">@itemCategory.CategoryName</div>
+                            <div class="voffset10"></div>
+                            <div class="subtitle">@itemCategory.Description</div>
+                            <img class="center" src="@itemCategory.PictureUrl">
+
+                        </div>
+                        @foreach (var itemProduct in Model.ProductList.Where(x => x.CategoryId == itemCategory.CategoryId).ToList())
+                {
+                            <div class="col-md-4 jt_col column_container">
+                                <div class="voffset10"></div>
+
+                                <ul class="menu">
+                                    <li>
+                                        <a href="@itemProduct.PictureUrl" class="swipebox" style="color:#c02530"><i class="fa fa-camera"></i></a> @itemProduct.ProductName 
+                                        <div class="detail">@itemProduct.Description<span class="price">₺ @itemProduct.Price.ToString("0.00")</span></div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+
+        <div class="jt_row jt_row-fluid row" id="menudownloadrow" style="margin-bottom: 40px">
+            <div class="col-md-12 jt_col column_container">
+                <div class="col-md-4 col-md-offset-4 jt_col column_container">
+
+                    <div class="voffset100"></div>
+                    <a href="menu.html" class="button menu center">MENÜMÜZÜ İNDİRİN</a>
+                </div>
+            </div>
+        </div>
+
+            </div>
+
+
+    
+
+            <div class="voffset60"></div>
+
+
+</section>
+
+@section CustomPageCss{
+
+<style>
+    section.menu {
+        background: none;
+    }
+
+   .section .jt_row {
+    padding-bottom: 25px;
+}
+
+    #header {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 1001;
+        width: 100%;
+        height: 90px;
+        font-family: 'Open Sans', sans-serif;
+        /*background-color: #fff !important;*/
+        box-shadow: 0 1px 3px rgba(0,0,0,0.11);
+        padding-top: 20px;
+    }
+
+        #header .menu-item a {
+            color: #818181;
+        }
+
+        #header.overflow {
+            top: -100px;
+            left: 0px;
+            background-color: #fff !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.11);
+            -webkit-transition: all 0.3s ease-in;
+            -o-transition: all 0.3s ease-in;
+            transition: all 0.3s ease-in;
+            -webkit-font-smoothing: antialiased;
+        }
+</style>
+}
+
+
+@section CustomPageJs{
+
+
+}

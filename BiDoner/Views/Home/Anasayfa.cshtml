@@ -1,0 +1,158 @@
+﻿@model IEnumerable<BiDoner.Models.Product>
+@{
+    ViewBag.Title = "Anasayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("_Slider")
+
+
+<!--  MENU  -->
+<section id="menu" class="section menu">
+    <div class="container">
+        <div class="jt_row jt_row-fluid row">
+            <div class="col-md-12 jt_col column_container">
+                <div class="voffset100"></div>
+                <img class="center menu-logo" src="~/Content/images/menu_logo.png" alt="Menu Logo">
+                <div class="voffset60"></div>
+            </div>
+
+            @foreach (var itemCategory in @ViewBag.categoryList as List<BiDoner.Models.Category>)
+            {
+
+            <div class="col-md-4 jt_col column_container">
+                <h3>@itemCategory.CategoryName</h3>
+                <ul>
+
+                    @foreach (var itemProduct in Model.Where(x => x.CategoryId == itemCategory.CategoryId).ToList())
+                        {
+                        <li>
+                            @itemProduct.ProductName
+                            <div class="detail">@itemProduct.Description<span class="price">₺ @itemProduct.Price.ToString("0.00")</span></div>
+                        </li>
+                        }
+
+                </ul>
+            </div>
+            }
+
+
+
+
+
+            <div class="col-md-4 col-md-offset-4 jt_col column_container">
+                <a href="@Url.Action("Menu", "Menu")" class="button menu center">MENÜMÜZÜ İNCELEYİN</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="voffset30"></div>
+</section>
+<!-- END MENU  -->
+
+
+<!--  MAP SECTION -->
+<section id="testimonials2">
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3191.113328319758!2d30.73756241699802!3d36.88763704940288!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x82a8b364d683cfce!2zQsSwIETDlk5FUiYgTEVaWkVUIE1PTEFTSQ!5e0!3m2!1str!2str!4v1513268877213" frameborder="0" style="border:0;width:100%;height:500px" allowfullscreen></iframe>
+
+</section>
+<!-- END MAP SECTION -->
+
+<!-- ÇALIŞMA SAATLERİ  -->
+<section id="reservations" class="section reservations">
+    <div class="container">
+        <div class="jt_row jt_row-fluid row">
+            <div class="col-md-12 jt_col column_container">
+                <h2 class="section-title">İletişim</h2>
+            </div>
+            <div class="col-md-4  jt_col column_container">
+                <div class="section-subtitle">
+                    <h3 class="reservation-phone"> <i class="fa fa-phone fa-xs"></i>0242-311-79-80</h3>
+                </div>
+            </div>
+            <div class="col-md-4  jt_col column_container">
+                <div class="section-subtitle">
+                    <h3 class="reservation-phone" style="color:#c22530"><i class="fa fa-mobile-phone fa-xs"></i>0549-311-79-80</h3>
+                </div>
+            </div>
+            <div class="col-md-4  jt_col column_container">
+                <div class="section-subtitle">
+                    <h3 class="reservation-phone"><i class="fa fa-phone fa-xs"></i>0242-311-16-11</h3>
+                </div>
+            </div>
+            <div class="col-md-12 jt_col column_container">
+                <div class="reservations_logo"></div>
+                <div class="voffset40"></div>
+                <h4><span class="above">Online Siparis</span></h4>
+                <h3>Siparis Ver</h3>
+                <h4><span>Çalışma Saatleri</span></h4>
+                <div class="voffset50"></div>
+                <p><strong>Haftaiçi ve Haftasonu </strong> 09.00 - 21:00 <strong> arası sipariş verebilir veya bizi ziyaret edebilirsiniz</strong></p>
+
+            </div>
+
+            <div class="col-md-3 col-md-offset-3 jt_col column_container">
+
+                <a id="biKofteSiparisButton" href="https://www.yemeksepeti.com/bi-kofte-muratpasa-aspendos-bulv-antalya" class="button center">Bi Köfte Sipariş</a>
+
+            </div>
+            <div class="col-md-3 jt_col column_container">
+
+
+                <a id="biDonerSiparisButton" href="https://www.yemeksepeti.com/bi-doner-hatay-usulu-muratpasa-aspendos-bulv-antalya" class="button center">Bi Döner Sipariş</a>
+            </div>
+            <div class="voffset60"></div>
+            <div class="col-md-12 jt_col column_container">
+                <div class="voffset60"></div>
+                <div class="ornament"></div>
+            </div>
+            <div class="voffset60"></div>
+        </div>
+    </div>
+</section>
+<!-- END ÇALIŞMA SAATLERİ  -->
+
+
+<!-- MÜŞTERİ YORUMLARI -->
+<section id="testimonials" class="section testimonials ">
+    <div class="container">
+        <div class="jt_row jt_row-fluid row">
+            <div class="voffset20"></div>
+            <div class="col-md-12 jt_col column_container">
+                <div class="testimonials_img"></div>
+                <h2>MÜŞTERİ YORUMLARI<span>”</span></h2>
+            </div>
+
+            <div class="col-md-12 jt_col column_container">
+                <div class="testimonials carousel-wrapper with_pagination">
+                    <div class="owl-carousel generic-carousel">
+                        <div class="item">
+                            <p>“Geleneksel hatay dönerin çok başarılı bir şekilde yorumlamışlar.Antalya'da yediğim en lezzetli dönerlerden diyebilirim güler yüzlü hizmet de cabası tebrik ederim.""</p>
+                            <span class="author">Tuğçe Sena Avşar</span>
+                        </div>
+                        <div class="item">
+                            <p>"“Yediğiniz tüm köfteleri unutun efsanevi piyazla tam bir süper ikili olmuşlar klasik mekanlardan sıkıldıysanız şiddetle denemenizi tavsiye ediyorum!"</p>
+                            <span class="author">Gaye Duruer</span>
+                        </div>
+                        <div class="item">
+                            <p>“Fiyatlarınız,hizmet kaliteniz on numara lezzetleriniz çok başarılı. Mevcut kaliteyi umarım sonsuza dek korursunuz  ."</p>
+                            <span class="author">İsmail Öztürk</span>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="voffset80"></div>*@
+            </div>
+        </div>
+    </div>  End .container
+</section>
+<!-- END MÜŞTERİ YORUMLARI-->
+
+
+@*@section CustomPageCss{
+
+
+        }
+
+    @section CustomPageJs{}*@

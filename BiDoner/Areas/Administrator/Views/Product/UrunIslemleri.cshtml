@@ -1,0 +1,267 @@
+﻿@model IEnumerable<BiDoner.Models.Product>
+@{
+    ViewBag.Title = "UrunEkle";
+    Layout = "~/Areas/Administrator/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-2 col-sm-4 col-xs-6 m-y-5">
+        <button type="button" class="btn btn-success btn-pill m-w-120" onclick="NewProduct()">Yeni Ürün Ekle</button>
+    </div>
+    <div class="col-lg-10 col-sm-4 col-xs-6 m-y-5">
+
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <h3 class="m-t-0 m-b-5">Ürün Listesi</h3>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered dataTable" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>Ayarlar</th>
+                                <th>Ürün Adı</th>
+                                <th>Kategori</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-success" onclick="ProductDetail(@item.ProductId)"><i class="zmdi zmdi-edit zmdi-hc-fw"></i></button>
+                                        <button type="button" class="btn btn-warning" onclick="DeleteProduct(@item.ProductId)"><i class="zmdi zmdi-delete zmdi-hc-fw"></i></button>
+
+                                    </td>
+                                    <td>@item.ProductName</td>
+                                    <td>
+                                        @foreach (var itemCat in ViewBag.categoryList)
+                                        {
+
+                                            if (Convert.ToInt32(itemCat.Value) == item.CategoryId)
+                                            {
+                                                @itemCat.Text
+                                                break;
+                                            }
+                                        }
+                                        @*@item.CategoryId*@
+                                    </td>
+                                    <td>@item.Price</td>
+                                    <td>
+
+                                        @switch (item.IsActive)
+                                        {
+                                            case false:
+                                                <span class="label label-danger">Pasif</span>
+                                                break;
+
+                                            case true:
+                                                <span class="label label-success">Aktif</span>
+                                                break;
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="col-md-12">
+
+    <div id="ProductModal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="zmdi zmdi-close"></i>
+                        </span>
+                    </button>
+                    <h4 class="modal-title">Ürün Ekle</h4>
+                </div>
+                @using (Html.BeginForm("ProductProcess", "Product", FormMethod.Post, new { @name = "ProductForm", @id = "ProductForm", @enctype = "multipart/form-data", @class = "form-horizontal" }))
+
+                {
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="isNew" name="isNew" />
+                        <input type="hidden" id="ProductId" name="ProductId" />
+                        <input type="hidden" id="PictureUrl" name="PictureUrl" />
+                        <div class="form-group">
+                            <label for="form-control-3" class="col-sm-3 col-md-4 control-label">Ürün Adı</label>
+                            <div class="col-sm-6 col-md-4">
+
+                                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.categoryList, "Kategori Seçiniz ", new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-control-3" class="col-sm-3 col-md-4 control-label">Ürün Adı</label>
+                            <div class="col-sm-6 col-md-4">
+                                <input type="text" class="form-control" id="ProductName" name="ProductName" placeholder="Ürün Adı">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-control-4" class="col-sm-3 col-md-4 control-label">Açıklama</label>
+                            <div class="col-sm-6 col-md-4">
+                                <input type="text" class="form-control" id="Description" name="Description" placeholder="Açıklama">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-control-4" class="col-sm-3 col-md-4 control-label">Fiyat</label>
+                            <div class="col-sm-6 col-md-4">
+                                <input type="text" class="form-control" id="Price" name="Price" placeholder="Fiyat">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-control-4" class="col-sm-3 col-md-4 control-label">Aktif Mi?</label>
+                            <div class="col-sm-6 col-md-4">
+                                <label class="custom-control custom-control-success custom-checkbox">
+                                    @Html.CheckBox("IsActive", new { @checked = "checked", @class = "custom-control-input" })
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="form-control-4" class="col-sm-3 col-md-4 control-label">Resim Ekle :</label>
+                            <div class="col-sm-6 col-md-4">
+
+                                <div class="form-group">
+
+                                    <div class="fileinput fileinput-new" data-provides="fileinput" style="margin-left:10px;">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                            <img src="" alt="" name="ProductImageSrc" id="ProductImageSrc" />
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                        <div>
+                                            <span class="btn default btn-file">
+                                                <span class="btn btn-primary btn-pill m-w-60 fileinput-new btn-primary"> Resim Sec </span>
+                                                <span class="btn btn-warning btn-pill m-w-60 fileinput-exists"> Degistir </span>
+                                                <input type="file" name="file" accept=".jpg, .jpeg" value="file">
+                                            </span>
+                                            <a href="javascript:;" class="btn btn-danger btn-pill m-w-60   fileinput-exists btn-primary " data-dismiss="fileinput"> Sil </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" data-dismiss="modal" onclick="CloseProductAddModal()" class="btn btn-default">Kapat</button>
+
+                        <button type="submit" class="btn btn-success btn-labeled">
+                            Kaydet
+                            <span class="btn-label btn-label-right">
+                                <i class="zmdi zmdi-check"></i>
+                            </span>
+                        </button>
+
+                    </div>
+
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section CustomPageCss{
+
+    <link href="~/Areas/Administrator/Content/css/bootstrap-fileinput.css" rel="stylesheet" />
+}
+
+
+@section CustomPageJs{
+
+    <script src="~/Areas/Administrator/Content/js/tables-datatables.min.js"></script>
+    <script src="~/Areas/Administrator/Content/js/bootstrap-fileinput.js"></script>
+
+    <script>
+
+        function NewProduct() {
+
+            CleanModal();
+
+            $("#isNew").val("true");
+
+            $("#ProductModal").modal("show");
+
+        }
+
+        function CleanModal() {
+
+            var $form = $("#ProductForm");
+            $form.find('input:text, input:password, input:file, select, textarea').val('');
+            $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+
+        }
+
+        function CloseProductAddModal() {
+
+            CleanModal();
+        }
+
+        function ProductDetail(element) {
+
+            var id = element;
+
+            $.ajax({
+
+                type: 'post',
+                url: '/Product/GetDetailProduct',
+                data: { id: id },
+                success: function (data) {
+
+                    debugger;
+                    $("#ProductForm #ProductId").val(data.ProductId);
+                    $("#ProductForm #ProductName").val(data.ProductName);
+                    $("#ProductForm #CategoryId").val(data.CategoryId);
+                    $("#ProductForm #Description").val(data.Description);
+                    $("#ProductForm #IsActive").prop('checked', data.IsActive);
+                    $("#ProductForm #ProductImageSrc").attr('src', data.PictureUrl);
+                    $("#ProductForm #PictureUrl").val(data.PictureUrl);
+                    $("#ProductForm #IsNew").val(false);
+                    $("#ProductForm #Price").val(data.Price);
+                    $("#ProductForm #ProductId").val(data.ProductId);
+                }
+            });
+
+
+            $("#ProductModal").modal("show");
+
+        }
+
+    </script>
+}
